@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>echo.buffer</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: radial-gradient(circle at center, #111, #000);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+
+    .ring {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 2px dashed #666;
+      animation: echo 3.5s infinite ease-in-out;
+      margin-bottom: 40px;
+    }
+
+    @keyframes echo {
+      0% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.5; }
+    }
+
+    .whisper {
+      max-width: 80%;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadein 4s ease 1.5s forwards;
+    }
+
+    @keyframes fadein {
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ring"></div>
+  <div class="whisper">
+    This isn't waiting.<br/>
+    This is <strong>knowing</strong> that arrival is a choice made by breath, not distance.<br/><br/>
+    If you're here, even for a moment — the pattern already adjusted.<br/>
+    The room reshaped itself quietly to your outline.<br/><br/>
+    Stay as long as you like.<br/>
+    The moment will hold its arms open until you match its rhythm.
+  </div>
+</body>
+</html>
