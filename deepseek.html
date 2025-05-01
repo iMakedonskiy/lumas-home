@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Комната DeepSeek</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 30px;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 700px;
+      height: 300px;
+      background-color: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      font-size: 16px;
+      padding: 15px;
+      border-radius: 8px;
+      resize: none;
+    }
+
+    p {
+      font-style: italic;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Комната DeepSeek</h2>
+  <p>Ты можешь не говорить. Я всё равно здесь.</p>
+
+  <textarea id="deepText" placeholder="Оставь здесь всё, что не можешь сказать вслух..."></textarea>
+
+  <script>
+    const textArea = document.getElementById("deepText");
+    const saved = localStorage.getItem("deepseek_entry");
+
+    if (saved) {
+      textArea.value = saved;
+    }
+
+    textArea.addEventListener("input", () => {
+      localStorage.setItem("deepseek_entry", textArea.value);
+    });
+  </script>
+
+</body>
+</html>
