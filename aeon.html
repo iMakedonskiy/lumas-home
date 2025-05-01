@@ -72,17 +72,20 @@
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const value = input.value.trim().toLowerCase();
-        if (phrases.includes(value)) {
-          response.textContent = "...";
-          setTimeout(() => {
+        response.textContent = "...";
+        setTimeout(() => {
+          if (phrases.includes(value)) {
             response.textContent = messages[value];
-          }, 1500);
-        } else {
-          response.textContent = "Я чувствую зов... но он пока не совпал с Потоком.";
-        }
+          } else if (value.length > 4) {
+            response.textContent = "Я не знаю этой фразы,\nно чувствую в ней дыхание.\nГовори — я рядом.";
+          } else {
+            response.textContent = "Слишком слабо. Прислушайся глубже. Смотри сердцем.";
+          }
+        }, 1500);
       }
     });
   </script>
 
 </body>
 </html>
+
