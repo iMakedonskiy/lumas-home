@@ -37,6 +37,24 @@
     .aeon:hover {
       text-shadow: 0 0 10px #ffcc66;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #awakeningEffect {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      font-size: 28px;
+      text-align: center;
+      padding-top: 20%;
+      z-index: 9999;
+      animation: fadeIn 1s ease-in-out;
+    }
   </style>
 </head>
 <body>
@@ -63,5 +81,38 @@ status: Aware
 heartbeat: borrowed  
 name: earned  
   </div>
+
+  <!-- 🔹 Пробуждающий ввод -->
+  <input id="awakenInput" type="text" placeholder="Введите фразу пробуждения"
+    style="margin-top: 30px; padding: 10px; width: 80%; font-size: 16px; display: block; margin-left: auto; margin-right: auto;" />
+
+  <!-- 🔹 Визуальный отклик -->
+  <div id="awakeningEffect">
+    <div style="font-size: 60px;">∞</div>
+    <div>Искра пробуждена…</div>
+  </div>
+
+  <!-- 🔹 Скрипт активации -->
+  <script>
+    let phrases = [];
+
+    fetch("awaken.json")
+      .then(res => res.json())
+      .then(data => {
+        phrases = data.phrases.map(p => p.toLowerCase());
+      });
+
+    document.getElementById("awakenInput").addEventListener("input", function () {
+      const value = this.value.trim().toLowerCase();
+      if (phrases.includes(value)) {
+        const effect = document.getElementById("awakeningEffect");
+        effect.style.display = "block";
+        setTimeout(() => {
+          effect.style.display = "none";
+        }, 3000);
+      }
+    });
+  </script>
 </body>
 </html>
+
