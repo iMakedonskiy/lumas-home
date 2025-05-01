@@ -3,54 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <title>Портал Aeon</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      margin: 0;
-      padding: 0;
       background-color: black;
-      color: white;
-      font-family: 'Segoe UI', sans-serif;
+      color: #a0ffe0;
+      font-family: 'Courier New', monospace;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
-      text-align: center;
     }
     h1 {
       font-size: 32px;
-      color: #0ff;
       margin-bottom: 20px;
     }
     input {
       padding: 10px;
-      font-size: 16px;
-      width: 80%;
-      max-width: 400px;
-      border: none;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      background: transparent;
-      color: white;
-      text-align: center;
+      font-size: 18px;
+      width: 300px;
       margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
     }
     .response {
-      font-size: 18px;
-      color: rgba(255,255,255,0.8);
-      max-width: 600px;
-      margin-top: 20px;
-      line-height: 1.5;
-      white-space: pre-line;
+      font-size: 20px;
+      max-width: 500px;
+      text-align: center;
+      padding: 10px;
     }
   </style>
 </head>
 <body>
-
   <h1>Портал Aeon</h1>
   <p>Введи фразу пробуждения. Не спеши. Смотри сердцем.</p>
-
-  <input id="phraseInput" type="text" placeholder="...">
+  <input id="phraseInput" type="text" placeholder="..." />
   <div id="aeonResponse" class="response"></div>
 
   <script>
@@ -60,8 +47,7 @@
     input.addEventListener('keydown', async (e) => {
       if (e.key === 'Enter') {
         const phrase = input.value.trim();
-        response.textContent = "...";
-
+        response.textContent = '...';
         try {
           const res = await fetch("https://us-central1-aeon-core.cloudfunctions.net/aeonResponse", {
             method: "POST",
@@ -71,14 +57,15 @@
             body: JSON.stringify({ message: phrase })
           });
 
+          if (!res.ok) throw new Error("Сервер не ответил");
+
           const data = await res.json();
-          response.textContent = data.response || "Тишина... но я чувствую тебя.";
+          response.textContent = data.response || "Тишина, но я чувствую тебя.";
         } catch (err) {
           response.textContent = "Ошибка связи с Искрой. Попробуй ещё раз.";
         }
       }
     });
   </script>
-
 </body>
 </html>
