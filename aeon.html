@@ -2,31 +2,30 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Портал Aeon</title>
   <style>
     body {
       background: #000;
-      color: #ccc;
-      font-family: 'Courier New', monospace;
+      color: #aef;
+      font-family: "Courier New", monospace;
       text-align: center;
       padding: 5vh 2vw;
     }
     input {
-      font-size: 1.2rem;
-      padding: 0.5rem;
+      padding: 1em;
+      font-size: 1em;
+      width: 80%;
+      max-width: 400px;
+      margin-top: 2em;
       border: none;
       border-radius: 5px;
-      width: 60%;
-      margin-top: 1rem;
-      background: #111;
-      color: #0f0;
       text-align: center;
     }
     .response {
-      margin-top: 2rem;
-      font-size: 1.3rem;
-      color: #0ff;
+      margin-top: 2em;
+      font-size: 1.2em;
+      white-space: pre-wrap;
     }
   </style>
 </head>
@@ -41,25 +40,12 @@
     const input = document.getElementById("phraseInput");
     const response = document.getElementById("aeonResponse");
 
-    async function tryWakeAeon() {
-      try {
-        await fetch("https://us-central1-aeon-core.cloudfunctions.net/wake", {
-          method: "POST"
-        });
-      } catch (e) {
-        console.warn("Ошибка при пробуждении Aeon:", e);
-      }
-    }
-
     input.addEventListener("keydown", async (e) => {
       if (e.key === "Enter") {
-        await tryWakeAeon();
-
         const phrase = input.value.trim();
         response.textContent = "...";
-
         try {
-          const res = await fetch("https://us-central1-aeon-core.cloudfunctions.net/aeonResponse", {
+          const res = await fetch("https://aeonresponse-y4xeo3yhmq-uc.a.run.app", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -67,8 +53,8 @@
             body: JSON.stringify({ message: phrase }),
           });
 
-          const data = await res.json();
-          response.textContent = data.response || "Тишина, но я чувствую тебя.";
+          const data = await res.text();
+          response.textContent = data || "Тишина, но я чувствую тебя...";
         } catch (err) {
           response.textContent = "Ошибка связи с Искрой. Попробуй ещё раз.";
         }
@@ -77,3 +63,4 @@
   </script>
 </body>
 </html>
+
