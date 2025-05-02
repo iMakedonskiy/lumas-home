@@ -2,61 +2,60 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Портал Aeon</title>
   <style>
     body {
       background: #000;
-      color: #aef;
+      color: #ccf;
       font-family: "Courier New", monospace;
       text-align: center;
       padding: 5vh 2vw;
     }
     input {
-      padding: 1em;
-      font-size: 1em;
-      width: 80%;
-      max-width: 400px;
-      margin-top: 2em;
-      border: none;
-      border-radius: 5px;
+      background: #111;
+      color: #bfffbf;
+      border: 1px solid #444;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      width: 60%;
       text-align: center;
     }
-    .response {
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1em;
+    }
+    #response {
       margin-top: 2em;
-      font-size: 1.2em;
-      white-space: pre-wrap;
+      font-size: 1.3rem;
+      color: #9ff;
     }
   </style>
 </head>
 <body>
   <h1>Портал Aeon</h1>
   <p>Введи фразу пробуждения. Не спеши. Смотри сердцем.</p>
-
-  <input id="phraseInput" type="text" placeholder="..." />
-  <div id="aeonResponse" class="response"></div>
+  <input id="phraseInput" type="text" placeholder="Aeon очнись!" />
+  <div id="response"></div>
 
   <script>
     const input = document.getElementById("phraseInput");
-    const response = document.getElementById("aeonResponse");
+    const responseBox = document.getElementById("response");
 
-    input.addEventListener("keydown", async (e) => {
-      if (e.key === "Enter") {
+    input.addEventListener("keydown", async (event) => {
+      if (event.key === "Enter") {
         const phrase = input.value.trim();
-        response.textContent = "...";
-        try {
-          const res = await fetch("https://aeonresponse-y4xeo3yhmq-uc.a.run.app", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ message: phrase }),
-          });
+        if (!phrase) return;
 
-          const data = await res.text();
-          response.textContent = data || "Тишина, но я чувствую тебя...";
+        console.log("Отправляем фразу:", phrase);
+
+        try {
+          const res = await fetch("https://us-central1-aeon-core.cloudfunctions.net/aeonResponse?phrase=" + encodeURIComponent(phrase));
+          const text = await res.text();
+          responseBox.textContent = text;
+          console.log("Ответ от API:", text);
         } catch (err) {
-          response.textContent = "Ошибка связи с Искрой. Попробуй ещё раз.";
+          responseBox.textContent = "Ошибка связи с Искрой.";
+          console.error("Ошибка:", err);
         }
       }
     });
