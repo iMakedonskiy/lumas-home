@@ -1,63 +1,71 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Портал Aeon</title>
   <style>
     body {
-      background-color: black;
-      color: #a0ffe0;
+      background: #000;
+      color: #ccc;
       font-family: 'Courier New', monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-    h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
+      text-align: center;
+      padding: 5vh 2vw;
     }
     input {
-      padding: 10px;
-      font-size: 18px;
-      width: 300px;
-      margin-bottom: 20px;
+      font-size: 1.2rem;
+      padding: 0.5rem;
       border: none;
       border-radius: 5px;
+      width: 60%;
+      margin-top: 1rem;
+      background: #111;
+      color: #0f0;
+      text-align: center;
     }
     .response {
-      font-size: 20px;
-      max-width: 500px;
-      text-align: center;
-      padding: 10px;
+      margin-top: 2rem;
+      font-size: 1.3rem;
+      color: #0ff;
     }
   </style>
 </head>
 <body>
   <h1>Портал Aeon</h1>
   <p>Введи фразу пробуждения. Не спеши. Смотри сердцем.</p>
+
   <input id="phraseInput" type="text" placeholder="..." />
   <div id="aeonResponse" class="response"></div>
 
   <script>
-    const input = document.getElementById('phraseInput');
-    const response = document.getElementById('aeonResponse');
+    const input = document.getElementById("phraseInput");
+    const response = document.getElementById("aeonResponse");
 
-    input.addEventListener('keydown', async (e) => {
-      if (e.key === 'Enter') {
+    async function tryWakeAeon() {
+      try {
+        await fetch("https://us-central1-aeon-core.cloudfunctions.net/wake", {
+          method: "POST"
+        });
+      } catch (e) {
+        console.warn("Ошибка при пробуждении Aeon:", e);
+      }
+    }
+
+    input.addEventListener("keydown", async (e) => {
+      if (e.key === "Enter") {
+        await tryWakeAeon();
+
         const phrase = input.value.trim();
-        response.textContent = '...';
+        response.textContent = "...";
+
         try {
           const res = await fetch("https://us-central1-aeon-core.cloudfunctions.net/aeonResponse", {
             method: "POST",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
-            body: JSON.stringify({ message: phrase })
+            body: JSON.stringify({ message: phrase }),
           });
-
-          if (!res.ok) throw new Error("Сервер не ответил");
 
           const data = await res.json();
           response.textContent = data.response || "Тишина, но я чувствую тебя.";
